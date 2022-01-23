@@ -40,3 +40,8 @@ variable "lambda_memory_size" {
   description = "The memory(MB) allocation of the Lambda"
   default = 5120
 }
+
+variable "domain" {
+  type        = string
+  description = "The name of the hosted zone to use"
+}

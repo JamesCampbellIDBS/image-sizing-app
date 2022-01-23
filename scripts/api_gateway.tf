@@ -1,3 +1,4 @@
+# API Gateway code for uploading images to resize
 resource "aws_apigatewayv2_api" "lambda" {
   name = "${local.general_resource_name}-gateway-api"
   protocol_type = "HTTP"
@@ -46,6 +47,45 @@ resource "aws_apigatewayv2_route" "image_resizer" {
   target = "integrations/${aws_apigatewayv2_integration.image_resizer.id}"
 }
 
+resource "aws_acm_certificate" "cert" {
+  domain_name       = var.domain
+  validation_method = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_acm_certificate_validation" "cert" {
+  certificate_arn         = aws_acm_certificate.cert.arn
+  validation_record_fqdns = [for record in aws_route53_record.image_resizer : record.fqdn]
+}
+
+resource "aws_apigatewayv2_domain_name" "image_resizer" {
+  domain_name = local.domain_name
+  domain_name_configuration {
+    certificate_arn = aws_acm_certificate.cert.arn
+    endpoint_type = "REGIONAL"
+    security_policy = "TLS_1_2"
+  }
+}
+
+data "aws_route53_zone" "zone" {
+  name  = "aircall.com"
+  private_zone = false
+}
+
+resource "aws_route53_record" "image_resizer" {
+  name = var.domain
+  type = "A"
+  zone_id = data.aws_route53_zone.zone.id
+  alias {
+    evaluate_target_health = false
+    name = aws_apigatewayv2_domain_name.image_resizer.domain_name
+    zone_id = aws_apigatewayv2_domain_name.image_resizer.id
+  }
+}
+
 resource "aws_lambda_permission" "api_gw" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
@@ -57,7 +97,7 @@ resource "aws_lambda_permission" "api_gw" {
 resource "aws_cloudfront_distribution" "image_resizer" {
   enabled = true
   default_cache_behavior {
-    allowed_methods = ["POST"]
+    allowed_methods = ["POST", "GET"]
     cached_methods = []
     target_origin_id = ""
     viewer_protocol_policy = ""

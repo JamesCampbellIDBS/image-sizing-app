@@ -1,5 +1,5 @@
 terraform {
-
+ backend "s3" {}
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -34,6 +34,7 @@ locals {
     "ap-southeast-2" = "us-west-2"}
 
   replica_region = lookup(local.region_to_replicate, var.aws_region)
+  domain_name = var.domain
 }
 
 provider "aws" {
