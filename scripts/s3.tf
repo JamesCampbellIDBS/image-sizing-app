@@ -28,6 +28,8 @@ resource "aws_s3_bucket" "bucket" {
     target_bucket = aws_s3_bucket.logging_bucket.id
   }
 
+  acl = "public-read"
+
   replication_configuration {
     role = aws_iam_role.replication.arn
     rules {
@@ -38,8 +40,6 @@ resource "aws_s3_bucket" "bucket" {
       }
     }
   }
-
-  tags = local.tags
 }
 
 # Replication Bucket
@@ -59,8 +59,6 @@ resource "aws_s3_bucket" "replica_bucket" {
       }
     }
   }
-
-  tags = local.tags
 }
 
 # Logging Bucket
@@ -80,7 +78,6 @@ resource "aws_s3_bucket" "logging_bucket" {
       }
     }
   }
-
 }
 
 resource "aws_iam_role" "replication" {
