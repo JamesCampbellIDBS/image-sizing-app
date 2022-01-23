@@ -1,5 +1,5 @@
 # Dockerfile for synthetic-check pipeline stage
-FROM hub.docker.com/hashicorp/terraform:1.1.4
+FROM hashicorp/terraform:1.0.11
 
 LABEL maintainer="SRE"
 
@@ -7,11 +7,11 @@ LABEL maintainer="SRE"
 RUN apk add --no-cache --update bash git python3 python3-dev py-pip openssh jq
 RUN pip3 install --no-cache-dir boto3 awscli botocore
 
-WORKDIR /opt/
+WORKDIR /opt/SRE
 
 ENV DEPLOYMENT_NAME="test"
 
 COPY scripts/ .
-RUN chmod +x /opt/deploy.sh
+RUN chmod +x deploy.sh
 
-ENTRYPOINT ["./opt/deploy.sh"]
+ENTRYPOINT ["/opt/SRE/deploy.sh"]
