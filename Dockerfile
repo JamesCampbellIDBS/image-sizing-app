@@ -9,8 +9,6 @@ RUN pip3 install --no-cache-dir boto3 awscli botocore
 
 WORKDIR /opt/SRE
 
-ENV DEPLOYMENT_NAME="test"
-
 COPY scripts/ .
 RUN chmod +x deploy.sh
 
