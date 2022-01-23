@@ -3,7 +3,7 @@ provider "aws" {
   alias  = "replica"
   region = local.replica_region
   assume_role {
-    role_arn   = var.aws_role_arn
+    role_arn = var.aws_role_arn
   }
 }
 
@@ -19,7 +19,7 @@ resource "aws_s3_bucket" "bucket" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm     = var.sse_algorithm
+        sse_algorithm = var.sse_algorithm
       }
     }
   }
@@ -35,7 +35,7 @@ resource "aws_s3_bucket" "bucket" {
     rules {
       status = "Enabled"
       destination {
-        bucket = aws_s3_bucket.replica_bucket.arn
+        bucket        = aws_s3_bucket.replica_bucket.arn
         storage_class = "STANDARD_IA"
       }
     }
@@ -55,7 +55,7 @@ resource "aws_s3_bucket" "replica_bucket" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm     = var.sse_algorithm
+        sse_algorithm = var.sse_algorithm
       }
     }
   }
@@ -74,17 +74,17 @@ resource "aws_s3_bucket" "logging_bucket" {
   server_side_encryption_configuration {
     rule {
       apply_server_side_encryption_by_default {
-        sse_algorithm     = var.sse_algorithm
+        sse_algorithm = var.sse_algorithm
       }
     }
   }
 }
 
 resource "aws_iam_role" "replication" {
-  permissions_boundary = var.permissions_boundary
+  permissions_boundary  = var.permissions_boundary
   name                  = "${local.general_resource_name}-replication-role"
   force_detach_policies = true
-  assume_role_policy = <<POLICY
+  assume_role_policy    = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -102,7 +102,7 @@ POLICY
 }
 
 resource "aws_iam_policy" "replication" {
-  name   = "${local.general_resource_name}-replication-policy"
+  name = "${local.general_resource_name}-replication-policy"
 
   policy = <<POLICY
 {

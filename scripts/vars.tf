@@ -4,41 +4,41 @@ variable "env" {
 }
 
 variable "aws_region" {
-  type = string
+  type        = string
   description = "The AWS region to deploy resources to"
 }
 
 variable "aws_role_arn" {
-  type = string
+  type        = string
   description = "The AWS Role ARN to assume"
 }
 
 variable "resource_owner" {
-  type = string
+  type        = string
   description = "Used for tagging resources. Typically the Dept, or Customer name"
 }
 
 variable "sse_algorithm" {
-  type = string
+  type        = string
   description = "The server-side encryption algorithm to use with the s3 buckets"
-   default     = "AES256"
+  default     = "AES256"
 }
 
 variable "permissions_boundary" {
   description = "Permission boundary to use for iam creation"
-  type = string
+  type        = string
 }
 
 variable "lambda_timeout" {
-  type = number
+  type        = number
   description = "The Lambda execution timeout value(s)"
-  default = 60
+  default     = 60
 }
 
 variable "lambda_memory_size" {
-  type = number
+  type        = number
   description = "The memory(MB) allocation of the Lambda"
-  default = 5120
+  default     = 5120
 }
 
 variable "domain" {
