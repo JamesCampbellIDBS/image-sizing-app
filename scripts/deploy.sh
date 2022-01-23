@@ -10,6 +10,6 @@ terraform init -backend-config=/opt/SRE/backends/${DEPLOYMENT_TYPE}-backend.tfva
 # Consider handling error. OR checking if workspace name is already present.
 terraform workspace new ${DEPLOYMENT_NAME}
 
-terraform workspace select ${terraform workspace}
+terraform workspace select ${DEPLOYMENT_NAME}
 
-terraform apply -var-file ${DEPLOYMENT_TYPE}.tfvars -auto-approve
+terraform apply -var-file=/opt/SRE/${DEPLOYMENT_VAR_FILE} -auto-approve

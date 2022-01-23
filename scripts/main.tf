@@ -11,7 +11,7 @@ terraform {
 data "aws_caller_identity" "this" {}
 
 locals {
-  general_resource_name = "image-resizer-${var.env}-${terraform.workspace}-"
+  general_resource_name = "image-resizer-${var.env}-${terraform.workspace}"
   aws_acc_id  = data.aws_caller_identity.this.account_id
   tags = {
     resource_owner                                 = var.resource_owner
@@ -50,7 +50,7 @@ provider "aws" {
 resource "aws_lambda_function" "lambda" {
   filename = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
-  function_name = "${local.general_resource_name}lambda"
+  function_name = "${local.general_resource_name}-lambda"
   handler = "app.lambdaHandler"
   role = aws_iam_role.lambda_image_resizer.arn
   runtime = "nodejs14.x"
@@ -59,7 +59,7 @@ resource "aws_lambda_function" "lambda" {
 
   environment {
     variables = {
-      S3_BUCKET = "${local.general_resource_name}bucket"
+      S3_BUCKET = "${local.general_resource_name}-bucket"
     }
   }
 }

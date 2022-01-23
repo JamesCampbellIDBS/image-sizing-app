@@ -1,5 +1,5 @@
 resource "aws_iam_role" "lambda_image_resizer" {
-  name                 = "${local.general_resource_name}role"
+  name                 = "${local.general_resource_name}-role"
   permissions_boundary = "arn:aws:iam::${local.aws_acc_id}:policy/restricted/deployment_permissions_boundary"
 
   assume_role_policy = jsonencode({
@@ -23,7 +23,7 @@ resource "aws_iam_role_policy_attachment" "generic_logs_policy" {
 }
 
 resource "aws_iam_role_policy" "push_to_s3_bucket" {
-  name = "${local.general_resource_name}policy"
+  name = "${local.general_resource_name}-policy"
   role = aws_iam_role.lambda_image_resizer.id
   policy = jsonencode({
     Version = "2012-10-17",

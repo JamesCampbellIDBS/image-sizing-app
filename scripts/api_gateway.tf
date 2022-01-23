@@ -7,7 +7,7 @@ resource "aws_apigatewayv2_api" "lambda" {
 resource "aws_apigatewayv2_stage" "lambda" {
   api_id = aws_apigatewayv2_api.lambda.id
 
-  name = "${local.general_resource_name}gateway-stage"
+  name = "${local.general_resource_name}-gateway-stage"
   auto_deploy = true
 
   access_log_settings {
@@ -29,7 +29,7 @@ resource "aws_apigatewayv2_stage" "lambda" {
 }
 
 resource "aws_cloudwatch_log_group" "api_gw" {
-  name = "${local.general_resource_name}cloudwatch-group"
+  name = "${local.general_resource_name}-cloudwatch-group"
 
   retention_in_days = 30
 }
@@ -76,7 +76,7 @@ data "aws_route53_zone" "zone" {
 }
 
 resource "aws_route53_record" "image_resizer" {
-  name = var.domain
+  name = local.general_resource_name
   type = "A"
   zone_id = data.aws_route53_zone.zone.id
   alias {
