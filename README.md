@@ -31,3 +31,4 @@ When completed, there will be a Web URL, which can be reached, with a
 * Testing: the deployment end to end. Not able to test in AWS, as I don't have an account
 * Testing: Add a simple smoke test to the deployment script, which hits the API, with an image, and validates the response
 * Authentication: Figure out how to set up authentication with the app
+* Improvements: CloudFront and API Gateway are a bit complex. Consider breaking out into TF Modules. Same with s3.
